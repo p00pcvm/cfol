@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Conway’s Farm of Life</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        p {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .navigation-links {
+            margin-top: 10px;
+        }
+        .navigation-links a, .navigation-links select {
+            margin: 0 10px;
+            text-decoration: none;
+            color: var(--link-color);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .navigation-links a:hover, .navigation-links select:hover {
+            text-decoration: underline;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background-color: #121212;
+                --text-color: #ffffff;
+                --link-color: #40c4ff;
+            }
+        }
+        @media (prefers-color-scheme: light) {
+            :root {
+                --background-color: #ffffff;
+                --text-color: #000000;
+                --link-color: #007acc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>About Conway’s Farm of Life</h1>
+    <p>This is a humble nod to the late <a href="https://en.wikipedia.org/wiki/John_Horton_Conway" target="_blank">John Horton Conway</a>, as well as a Minimum Viable Product to demonstrate an incremental clicker game.</p>
+    <div class="navigation-links">
+        <select id="play-dropdown" onchange="handlePlayOptionChange()">
+            <option value="">Play</option>
+            <option value="free">Free</option>
+            <option value="limit">Limit</option>
+            <option value="action">Action</option>
+        </select>
+        <a href="about.html">About</a>
+    </div>
+
+    <script>
+        function handlePlayOptionChange() {
+            const selectedValue = document.getElementById('play-dropdown').value;
+            if (selectedValue) {
+              
+                switch (selectedValue) {
+                    case 'free':
+                        window.location.href = 'cfol_f.html';
+                        break;
+                    case 'limit':
+                        window.location.href = 'cfol_l.html';
+                        break;
+                    case 'action':
+                        window.location.href = 'cfol_a.html';
+                        break;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
