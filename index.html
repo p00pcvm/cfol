@@ -78,6 +78,14 @@
                 }
             }
         }
+            const tonConnectUI = window.TonConnectUI.create({
+        manifestUrl: 'https://p00pcvm.github.io/tonconnect-manifest.json',
+    });
+
+    document.getElementById('ton-connect-button').addEventListener('click', () => {
+        tonConnectUI.connect();
+    });
     </script>
+    
 </body>
 </html>
