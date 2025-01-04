@@ -49,11 +49,66 @@
         }
     </style>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <script type="module">
+        import { TonConnectUI } from 'https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.esm.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const handlePlayOptionChange = () => {
+                const selectedValue = (document.getElementById('play-dropdown') as HTMLSelectElement).value;
+                if (selectedValue) {
+                    switch (selectedValue) {
+                        case 'free':
+                            window.location.href = 'cfol_f.html';
+                            break;
+                        case 'limit':
+                            window.location.href = 'cfol_l.html';
+                            break;
+                        case 'action':
+                            window.location.href = 'cfol_a.html';
+                            break;
+                    }
+                }
+            };
+
+            document.getElementById('play-dropdown')?.addEventListener('change', handlePlayOptionChange);
+
+            if (!window.TonConnectUI) {
+                console.error("TonConnectUI is not defined. Ensure the script is loaded correctly.");
+            } else {
+                const tonConnectUI = TonConnectUI.create({
+                    manifestUrl: 'https://p00pcvm.github.io/cfol/tonconnect-manifest.json',
+                    buttonRootId: 'ton-connect-button'
+                });
+
+                const connectButton = document.getElementById('ton-connect-button') as HTMLButtonElement;
+
+                connectButton.addEventListener('click', async () => {
+                    try {
+                        console.log("Attempting to connect to wallet...");
+                        const connectedWallet = await tonConnectUI.connect();
+                        console.log("Connected wallet:", connectedWallet);
+                    } catch (error) {
+                        console.error("Error connecting to wallet:", error);
+                    }
+                });
+
+                if (window.Telegram && window.Telegram.WebApp) {
+                    connectButton.removeEventListener('click', () => {
+                        alert("Connecting wallet inside Telegram Mini Apps is not supported. Please use the full browser version.");
+                    });
+
+                    connectButton.addEventListener('click', () => {
+                        alert("Connecting wallet inside Telegram Mini Apps is not supported. Please use the full browser version.");
+                    });
+                }
+            }
+        });
+    </script>
 </head>
 <body>
     <h1>Welcome to Conway's Farm of Life</h1>
     <div class="navigation-links">
-        <select id="play-dropdown" onchange="handlePlayOptionChange()">
+        <select id="play-dropdown">
             <option value="">Play</option>
             <option value="free">Free</option>
             <option value="limit">Limit</option>
@@ -62,56 +117,5 @@
         <a href="about.html">About</a>
         <button id="ton-connect-button">Connect Wallet</button>
     </div>
-
-    <script>
-        function handlePlayOptionChange() {
-            const selectedValue = document.getElementById('play-dropdown').value;
-            if (selectedValue) {
-                switch (selectedValue) {
-                    case 'free':
-                        window.location.href = 'cfol_f.html';
-                        break;
-                    case 'limit':
-                        window.location.href = 'cfol_l.html';
-                        break;
-                    case 'action':
-                        window.location.href = 'cfol_a.html';
-                        break;
-                }
-            }
-        }
-
-        if (!window.TonConnectUI) {
-            console.error("TonConnectUI is not defined. Ensure the script is loaded correctly.");
-        } else {
-            const tonConnectUI = window.TonConnectUI.create({
-                manifestUrl: 'https://p00pcvm.github.io/cfol/tonconnect-manifest.json',
-                buttonRootId: 'ton-connect-button' // Updated to match the button ID
-            });
-
-            const connectButton = document.getElementById('ton-connect-button');
-
-            connectButton.addEventListener('click', async () => {
-                try {
-                    console.log("Attempting to connect to wallet...");
-                    const connectedWallet = await tonConnectUI.connect();
-                    console.log("Connected wallet:", connectedWallet);
-                } catch (error) {
-                    console.error("Error connecting to wallet:", error);
-                }
-            });
-
-            // Check if the app is running inside Telegram Mini App
-            if (window.Telegram && window.Telegram.WebApp) {
-                connectButton.removeEventListener('click', () => {
-                    alert("Connecting wallet inside Telegram Mini Apps is not supported. Please use the full browser version.");
-                });
-
-                connectButton.addEventListener('click', () => {
-                    alert("Connecting wallet inside Telegram Mini Apps is not supported. Please use the full browser version.");
-                });
-            }
-        }
-    </script>
 </body>
 </html>
