@@ -55,6 +55,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const handlePlayOptionChange = () => {
                 const selectedValue = (document.getElementById('play-dropdown') as HTMLSelectElement).value;
+                console.log('Selected value:', selectedValue); // Added logging
                 if (selectedValue) {
                     switch (selectedValue) {
                         case 'free':
