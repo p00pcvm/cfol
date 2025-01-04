@@ -81,19 +81,23 @@
             }
         }
 
-        const tonConnectUI = window.TonConnectUI.create({
-            manifestUrl: 'https://p00pcvm.github.io/tonconnect-manifest.json',
-        });
+        if (!window.TonConnectUI) {
+            console.error("TonConnectUI is not defined. Ensure the script is loaded correctly.");
+        } else {
+            const tonConnectUI = window.TonConnectUI.create({
+                manifestUrl: 'https://p00pcvm.github.io/tonconnect-manifest.json',
+            });
 
-        document.getElementById('ton-connect-button').addEventListener('click', async () => {
-            try {
-                const connectedWallet = await tonConnectUI.connect();
-                // Do something with connectedWallet if needed
-                console.log(connectedWallet);
-            } catch (error) {
-                console.error("Error connecting to wallet:", error);
-            }
-        });
+            document.getElementById('ton-connect-button').addEventListener('click', async () => {
+                try {
+                    console.log("Attempting to connect to wallet...");
+                    const connectedWallet = await tonConnectUI.connect();
+                    console.log("Connected wallet:", connectedWallet);
+                } catch (error) {
+                    console.error("Error connecting to wallet:", error);
+                }
+            });
+        }
     </script>
 </body>
 </html>
