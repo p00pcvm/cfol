@@ -116,5 +116,22 @@
         <a href="about.html">About</a>
         <button id="ton-connect-button">Connect Wallet</button>
     </div>
+    <script>
+                function handlePlayOptionChange() {
+            const selectedValue = document.getElementById('play-dropdown').value;
+            if (selectedValue) {
+                switch (selectedValue) {
+                    case 'free':
+                        window.location.href = 'cfol_f.html';
+                        break;
+                    case 'limit':
+                        window.location.href = 'cfol_l.html';
+                        break;
+                    case 'action':
+                        window.location.href = 'cfol_a.html';
+                        break;
+             }
+            }
+           }
 </body>
 </html>
