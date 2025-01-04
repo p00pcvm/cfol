@@ -98,6 +98,13 @@
                 }
             });
         }
+
+        // Check if the app is running inside Telegram Mini App
+        if (window.Telegram && window.Telegram.WebApp) {
+            document.getElementById('ton-connect-button').addEventListener('click', () => {
+                alert("Connecting wallet inside Telegram Mini Apps is not supported. Please use the full browser version.");
+            });
+        }
     </script>
 </body>
 </html>
