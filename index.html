@@ -85,7 +85,8 @@
             console.error("TonConnectUI is not defined. Ensure the script is loaded correctly.");
         } else {
             const tonConnectUI = window.TonConnectUI.create({
-                manifestUrl: 'tonconnect-manifest.json',
+                manifestUrl: 'https://p00pcvm.github.io/tonconnect-manifest.json',
+                buttonRootId: 'ton-connect'
             });
 
             document.getElementById('ton-connect-button').addEventListener('click', async () => {
