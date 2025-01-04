@@ -82,40 +82,8 @@
 
                 const connectButton = document.getElementById('ton-connect-button') as HTMLButtonElement;
 
-                connectButton.addEventListener('click', async () => {
+                const connectWallet = async () => {
                     try {
                         console.log("Attempting to connect to wallet...");
                         const connectedWallet = await tonConnectUI.connect();
-                        console.log("Connected wallet:", connectedWallet);
-                    } catch (error) {
-                        console.error("Error connecting to wallet:", error);
-                    }
-                });
-
-                if (window.Telegram && window.Telegram.WebApp) {
-                    connectButton.removeEventListener('click', () => {
-                        alert("Connecting wallet inside Telegram Mini Apps is not supported. Please use the full browser version.");
-                    });
-
-                    connectButton.addEventListener('click', () => {
-                        alert("Connecting wallet inside Telegram Mini Apps is not supported. Please use the full browser version.");
-                    });
-                }
-            }
-        });
-    </script>
-</head>
-<body>
-    <h1>Welcome to Conway's Farm of Life</h1>
-    <div class="navigation-links">
-        <select id="play-dropdown">
-            <option value="">Play</option>
-            <option value="free">Free</option>
-            <option value="limit">Limit</option>
-            <option value="action">Action</option>
-        </select>
-        <a href="about.html">About</a>
-        <button id="ton-connect-button">Connect Wallet</button>
-    </div>
-</body>
-</html>
+                        console.log("Connected
