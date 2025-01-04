@@ -89,7 +89,9 @@
                 buttonRootId: 'ton-connect-button' // Updated to match the button ID
             });
 
-            document.getElementById('ton-connect-button').addEventListener('click', async () => {
+            const connectButton = document.getElementById('ton-connect-button');
+
+            connectButton.addEventListener('click', async () => {
                 try {
                     console.log("Attempting to connect to wallet...");
                     const connectedWallet = await tonConnectUI.connect();
@@ -98,14 +100,12 @@
                     console.error("Error connecting to wallet:", error);
                 }
             });
-        }
 
-        // Check if the app is running inside Telegram Mini App
-        if (window.Telegram && window.Telegram.WebApp) {
-            document.getElementById('ton-connect-button').addEventListener('click', () => {
-                alert("Connecting wallet inside Telegram Mini Apps is not supported. Please use the full browser version.");
-            });
-        }
-    </script>
-</body>
-</html>
+            // Check if the app is running inside Telegram Mini App
+            if (window.Telegram && window.Telegram.WebApp) {
+                connectButton.removeEventListener('click', () => {
+                    alert("Connecting wallet inside Telegram Mini Apps is not supported. Please use the full browser version.");
+                });
+
+                connectButton.addEventListener('click', () => {
+                    alert("Connecting wallet inside Telegram Mini Apps is not supported. Please use the full
