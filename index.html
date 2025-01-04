@@ -33,11 +33,42 @@
         .navigation-links a:hover, .navigation-links select:hover {
             text-decoration: underline;
         }
+        .wallet-container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .wallet-container h1 {
+            margin-bottom: 20px;
+        }
+        .connect-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .connect-button:hover {
+            background-color: #2980b9;
+        }
+        .status {
+            margin-top: 20px;
+            font-size: 14px;
+        }
         @media (prefers-color-scheme: dark) {
             :root {
                 --background-color: #121212;
                 --text-color: #ffffff;
                 --link-color: #40c4ff;
+            }
+            .wallet-container {
+                background-color: #222;
+                color: #fff;
             }
         }
         @media (prefers-color-scheme: light) {
@@ -61,6 +92,12 @@
         <a href="about.html">About</a>
     </div>
 
+    <div class="wallet-container">
+        <h1>Connect Your TON Wallet</h1>
+        <button class="connect-button" id="connectButton">Connect Wallet</button>
+        <div class="status" id="status"></div>
+    </div>
+
     <script>
         function handlePlayOptionChange() {
             const selectedValue = document.getElementById('play-dropdown').value;
@@ -78,6 +115,21 @@
                 }
             }
         }
+
+        document.getElementById('connectButton').addEventListener('click', async () => {
+            if (typeof window.ton !== 'undefined') {
+                try {
+                    const provider = window.ton;
+                    await provider.requestPermissions();
+                    const account = await provider.getAccount();
+                    document.getElementById('status').innerText = `Connected to ${account.address}`;
+                } catch (error) {
+                    document.getElementById('status').innerText = `Error connecting wallet: ${error.message}`;
+                }
+            } else {
+                document.getElementById('status').innerText = 'TON provider not found. Please install a TON wallet extension.';
+            }
+        });
     </script>
 </body>
 </html>
