@@ -21,7 +21,7 @@
         .navigation-links {
             margin-top: 10px;
         }
-        .navigation-links a, .navigation-links select {
+        .navigation-links a, .navigation-links select, .navigation-links button {
             margin: 0 10px;
             text-decoration: none;
             color: var(--link-color);
@@ -30,7 +30,7 @@
             cursor: pointer;
             font-size: 16px;
         }
-        .navigation-links a:hover, .navigation-links select:hover {
+        .navigation-links a:hover, .navigation-links select:hover, .navigation-links button:hover {
             text-decoration: underline;
         }
         @media (prefers-color-scheme: dark) {
@@ -48,44 +48,42 @@
             }
         }
     </style>
-<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-</head>
-<body>
-    <h1>Welcome to Conway's Farm of Life</h1>
-    <div class="navigation-links">
-        <select id="play-dropdown" onchange="handlePlayOptionChange()">
-            <option value="">Play</option>
-            <option value="free">Free</option>
-            <option value="limit">Limit</option>
-            <option value="action">Action</option>
-        </select>
-        <a href="about.html">About</a>
-    </div>
-<script>
-    function handlePlayOptionChange() {
-        const selectedValue = document.getElementById('play-dropdown').value;
-        if (selectedValue) {
-            switch (selectedValue) {
-                case 'free':
-                    window.location.href = 'cfol_f.html';
-                    break;
-                case 'limit':
-                    window.location.href = 'cfol_l.html';
-                    break;
-                case 'action':
-                    window.location.href = 'cfol_a.html';
-                    break;
-            }
-        }
-    }
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <script type="module">
+        import { TonConnectUI } from 'https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.esm.js';
 
-    const tonConnectUI = window.TonConnectUI.create({
-        manifestUrl: 'https://p00pcvm.github.io/tonconnect-manifest.json',
-    });
+        document.addEventListener('DOMContentLoaded', () => {
+            const handlePlayOptionChange = () => {
+                const selectedValue = (document.getElementById('play-dropdown') as HTMLSelectElement).value;
+                if (selectedValue) {
+                    switch (selectedValue) {
+                        case 'free':
+                            window.location.href = 'cfol_f.html';
+                            break;
+                        case 'limit':
+                            window.location.href = 'cfol_l.html';
+                            break;
+                        case 'action':
+                            window.location.href = 'cfol_a.html';
+                            break;
+                    }
+                }
+            };
 
-    document.getElementById('ton-connect-button').addEventListener('click', () => {
-        tonConnectUI.connect();
-    });
-</script>
-</body>
-</html>
+            document.getElementById('play-dropdown')?.addEventListener('change', handlePlayOptionChange);
+
+            if (!window.TonConnectUI) {
+                console.error("TonConnectUI is not defined. Ensure the script is loaded correctly.");
+            } else {
+                const tonConnectUI = TonConnectUI.create({
+                    manifestUrl: 'https://p00pcvm.github.io/cfol/tonconnect-manifest.json',
+                    buttonRootId: 'ton-connect-button'
+                });
+
+                const connectButton = document.getElementById('ton-connect-button') as HTMLButtonElement;
+
+                const connectWallet = async () => {
+                    try {
+                        console.log("Attempting to connect to wallet...");
+                        const connectedWallet = await tonConnectUI.connect();
+                        console.log("Connected
