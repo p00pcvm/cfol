@@ -54,7 +54,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const handlePlayOptionChange = () => {
-                const selectedValue = (document.getElementById('play-dropdown') as HTMLSelectElement).value;
+                const selectedValue = document.getElementById('play-dropdown').value;
                 console.log('Selected value:', selectedValue); // Added logging
                 if (selectedValue) {
                     switch (selectedValue) {
@@ -81,7 +81,7 @@
                     buttonRootId: 'ton-connect-button'
                 });
 
-                const connectButton = document.getElementById('ton-connect-button') as HTMLButtonElement;
+                const connectButton = document.getElementById('ton-connect-button');
 
                 const connectWallet = async () => {
                     try {
@@ -109,29 +109,12 @@
     <div class="navigation-links">
         <select id="play-dropdown">
             <option value="">Play</option>
-            <option value="cfol_f.html">Free</option>
+            <option value="free">Free</option>
             <option value="limit">Limit</option>
             <option value="action">Action</option>
         </select>
         <a href="about.html">About</a>
         <button id="ton-connect-button">Connect Wallet</button>
     </div>
-    <script>
-                function handlePlayOptionChange() {
-            const selectedValue = document.getElementById('play-dropdown').value;
-            if (selectedValue) {
-                switch (selectedValue) {
-                    case 'free':
-                        window.location.href = 'cfol_f.html';
-                        break;
-                    case 'limit':
-                        window.location.href = 'cfol_l.html';
-                        break;
-                    case 'action':
-                        window.location.href = 'cfol_a.html';
-                        break;
-             }
-            }
-           }
 </body>
 </html>
