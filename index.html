@@ -104,6 +104,7 @@
         <div class="loading" id="loading" style="display: none;">Connecting...</div>
     </div>
 
+    <script src="https://unpkg.com/@tonconnect/ui@^0.3.0/dist/tonconnect-ui.min.js"></script>
     <script>
         function handlePlayOptionChange() {
             const selectedValue = document.getElementById('play-dropdown').value;
@@ -122,28 +123,27 @@
             }
         }
 
-        document.getElementById('connectButton').addEventListener('click', async () => {
+        const manifestUrl = 'https://p00pcvm.github.io/cfol/tonconnect-manifest.json'; // Replace with your manifest URL
+        const tonConnect = new TonConnectUI({
+            manifestUrl: manifestUrl,
+            buttonRootId: 'connectButton',
+        });
+
+        tonConnect.onStatusChange((status) => {
+            document.getElementById('loading').style.display = 'none';
+            if (status.connected) {
+                document.getElementById('status').innerText = `Connected to ${status.account.address}`;
+            } else if (status.notFound) {
+                document.getElementById('status').innerText = 'TON provider not found. Please install a TON wallet extension.';
+            } else if (status.error) {
+                document.getElementById('status').innerText = `Error connecting wallet: ${status.error.message}. Please ensure your TON wallet extension is up to date and properly configured.`;
+            }
+        });
+
+        document.getElementById('connectButton').addEventListener('click', () => {
             document.getElementById('status').innerText = '';
             document.getElementById('loading').style.display = 'block';
-
-            if (typeof window.ton !== 'undefined') {
-                try {
-                    const provider = window.ton;
-                    await provider.requestPermissions();
-                    const account = await provider.getAccount();
-                    if (account && account.address) {
-                        document.getElementById('status').innerText = `Connected to ${account.address}`;
-                    } else {
-                        document.getElementById('status').innerText = 'Failed to retrieve account information.';
-                    }
-                } catch (error) {
-                    document.getElementById('status').innerText = `Error connecting wallet: ${error.message}. Please ensure your TON wallet extension is up to date and properly configured.`;
-                }
-            } else {
-                document.getElementById('status').innerText = 'TON provider not found. Please install a TON wallet extension.';
-            }
-
-            document.getElementById('loading').style.display = 'none';
+            tonConnect.connect();
         });
     </script>
 </body>
