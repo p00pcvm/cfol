@@ -60,6 +60,11 @@
             margin-top: 20px;
             font-size: 14px;
         }
+        .loading {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #3498db;
+        }
         @media (prefers-color-scheme: dark) {
             :root {
                 --background-color: #121212;
@@ -96,6 +101,7 @@
         <h1>Connect Your TON Wallet</h1>
         <button class="connect-button" id="connectButton">Connect Wallet</button>
         <div class="status" id="status"></div>
+        <div class="loading" id="loading" style="display: none;">Connecting...</div>
     </div>
 
     <script>
@@ -117,18 +123,27 @@
         }
 
         document.getElementById('connectButton').addEventListener('click', async () => {
+            document.getElementById('status').innerText = '';
+            document.getElementById('loading').style.display = 'block';
+
             if (typeof window.ton !== 'undefined') {
                 try {
                     const provider = window.ton;
                     await provider.requestPermissions();
                     const account = await provider.getAccount();
-                    document.getElementById('status').innerText = `Connected to ${account.address}`;
+                    if (account && account.address) {
+                        document.getElementById('status').innerText = `Connected to ${account.address}`;
+                    } else {
+                        document.getElementById('status').innerText = 'Failed to retrieve account information.';
+                    }
                 } catch (error) {
-                    document.getElementById('status').innerText = `Error connecting wallet: ${error.message}`;
+                    document.getElementById('status').innerText = `Error connecting wallet: ${error.message}. Please ensure your TON wallet extension is up to date and properly configured.`;
                 }
             } else {
                 document.getElementById('status').innerText = 'TON provider not found. Please install a TON wallet extension.';
             }
+
+            document.getElementById('loading').style.display = 'none';
         });
     </script>
 </body>
